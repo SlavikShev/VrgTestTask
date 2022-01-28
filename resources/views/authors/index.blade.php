@@ -16,24 +16,24 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('authors.store') }}" method="POST">
+                    <form id="form-data" data-route="{{ route('authors.store') }}" method="POST">
                         @csrf
                         <div class="mb-3">
                             <label for="name" class="form-label">Name</label>
-                            <input type="text" class="form-control" id="name">
+                            <input name="name" type="text" class="form-control" id="name">
                         </div>
                         <div class="mb-3">
                             <label for="surname" class="form-label">Surname</label>
-                            <input type="text" class="form-control" id="surname">
+                            <input name="surname" type="text" class="form-control" id="surname">
                         </div>
                         <div class="mb-3">
                             <label for="patronymic" class="form-label">Patronymic</label>
-                            <input type="text" class="form-control" id="patronymic">
+                            <input name="patronymic" type="text" class="form-control" id="patronymic">
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button id="saveButton" type="submit" class="btn btn-primary">Save</button>
                 </div>
             </div>
         </div>

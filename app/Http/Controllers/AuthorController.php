@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Author;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class AuthorController extends Controller
@@ -31,17 +32,17 @@ class AuthorController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
+     * @return JsonResponse
      */
     public function store(Request $request)
     {
         // todo add validation
-        dd(__METHOD__);
         $author = Author::create($request->all());
 
         if ($author)
-            return redirect()
-                ->route('authors.index');
+            return response()->json(['message' => 'author created'],200);
+        else
+            return response()->json(['message' => 'error'],500);
     }
 
     /**
