@@ -38,4 +38,6 @@
             </div>
         </div>
     </div>
+
+    @include('authors.list')
 @endsection

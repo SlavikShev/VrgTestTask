@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Author;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class AuthorController extends Controller
 {
@@ -15,7 +16,8 @@ class AuthorController extends Controller
      */
     public function index()
     {
-        return view('authors.index');
+        $authors = Author::selectRaw('*')->get()->values();
+        return view('authors.index', compact('authors'));
     }
 
     /**
@@ -32,15 +34,17 @@ class AuthorController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return JsonResponse
+     * @return JsonResponse|Response
      */
     public function store(Request $request)
     {
         // todo add validation
         $author = Author::create($request->all());
 
-        if ($author)
-            return response()->json(['message' => 'author created'],200);
+        if ($author) {
+            $authors = Author::selectRaw('*')->get()->values();
+            return response()->view('authors.list',compact('authors'));
+        }
         else
             return response()->json(['message' => 'error'],500);
     }
