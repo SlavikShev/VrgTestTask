@@ -1,5 +1,6 @@
 $(function() {
-    $('#saveButton').on('click', function (e) {
+    // save
+    $('#saveButton').on('click', function () {
         let data = $('form').serialize();
         let route = $('#form-data').data('route');
         $.ajax({

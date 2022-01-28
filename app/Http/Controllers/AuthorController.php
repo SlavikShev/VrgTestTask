@@ -16,7 +16,7 @@ class AuthorController extends Controller
      */
     public function index()
     {
-        $authors = Author::selectRaw('*')->get()->values();
+        $authors = Author::selectRaw('*')->toBase()->paginate(15);
         return view('authors.index', compact('authors'));
     }
 
@@ -42,7 +42,7 @@ class AuthorController extends Controller
         $author = Author::create($request->all());
 
         if ($author) {
-            $authors = Author::selectRaw('*')->get()->values();
+            $authors = Author::selectRaw('*')->toBase()->paginate(15);
             return response()->view('authors.list',compact('authors'));
         }
         else
@@ -87,10 +87,17 @@ class AuthorController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Author  $author
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse|Response
      */
     public function destroy(Author $author)
     {
-        //
+        $result = Author::destroy($author->id);
+
+        if ($result) {
+            $authors = Author::selectRaw('*')->toBase()->paginate(15);
+            return response()->view('authors.list',compact('authors'));
+        }
+        else
+            return response()->json(['message' => 'error'],500);
     }
 }
