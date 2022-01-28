@@ -5,6 +5,8 @@
         <th scope="col">Name</th>
         <th scope="col">Surname</th>
         <th scope="col">Patronymic</th>
+        <th scope="col">edit</th>
+        <th scope="col">delete</th>
     </tr>
     </thead>
     <tbody>
@@ -14,6 +16,8 @@
             <td>{{ $author->name }}</td>
             <td>{{ $author->surname }}</td>
             <td>{{ $author->patronymic }}</td>
+            <td><i class="fas fa-edit"></i></td>
+            <td><i class="fas fa-trash"></i></td>
         </tr>
     @endforeach
     </tbody>
