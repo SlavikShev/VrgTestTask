@@ -4,7 +4,16 @@
         <tr>
             <th scope="col">#</th>
             <th scope="col">Name</th>
-            <th scope="col">Surname</th>
+            <th scope="col" class="d-flex">Surname
+                <form action="{{ route('authors.index') }}" method="get">
+                    <input type="hidden" value="asc" name="surnameOrderBy">
+                    <button type="submit"><i class="fas fa-arrow-up"></i></button>
+                </form>
+                <form action="{{ route('authors.index') }}" method="get">
+                    <input type="hidden" value="desc" name="surnameOrderBy">
+                    <button type="submit"><i class="fas fa-arrow-down"></i></button>
+                </form>
+            </th>
             <th scope="col">Patronymic</th>
             <th scope="col">edit</th>
             <th scope="col">delete</th>
@@ -33,20 +42,23 @@
     $(function() {
         // delete
         $('.deleteButton').on('click', function () {
-            let route = $('#form-data').data('route');
-            let id = $(this).data('id');
-            let token = $(this).data('token');
-            $.ajax({
-                url: route + '/' + id,
-                method: 'delete',
-                data: {
-                    "id": id,
-                    "_token": token
-                },
-                success: function (data) {
-                    $('#authors_list').replaceWith(data);
-                }
-            });
+            let res = confirm('are you sure?');
+            if (res) {
+                let route = $('#form-data').data('route');
+                let id = $(this).data('id');
+                let token = $(this).data('token');
+                $.ajax({
+                    url: route + '/' + id,
+                    method: 'delete',
+                    data: {
+                        "id": id,
+                        "_token": token
+                    },
+                    success: function (data) {
+                        $('#authors_list').replaceWith(data);
+                    }
+                });
+            }
         });
         // edit
         $('.editButton').on('click', function () {

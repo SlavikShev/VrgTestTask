@@ -16,7 +16,12 @@ class AuthorController extends Controller
      */
     public function index()
     {
-        $authors = Author::selectRaw('*')->toBase()->paginate(15);
+        $authors = Author::selectRaw('*')->toBase();
+        if (request()->has('surnameOrderBy')) {
+            $order = request()->get('surnameOrderBy');
+            $authors->orderBy('surname',$order);
+        }
+        $authors = $authors->paginate(15)->withQueryString();
         return view('authors.index', compact('authors'));
     }
 
