@@ -17,7 +17,7 @@ class CreateAuthorsTable extends Migration
             $table->id();
             $table->string('surname');
             $table->string('name');
-            $table->string('patronymic')->default('');
+            $table->string('patronymic')->nullable();
         });
     }
 
