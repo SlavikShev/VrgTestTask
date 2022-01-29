@@ -76,11 +76,18 @@ class AuthorController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Author  $author
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse|Response
      */
     public function update(Request $request, Author $author)
     {
-        //
+        $result = $author->update($request->all());
+
+        if ($result) {
+            $authors = Author::selectRaw('*')->toBase()->paginate(15);
+            return response()->view('authors.list',compact('authors'));
+        }
+        else
+            return response()->json(['message' => 'error'],500);
     }
 
     /**
@@ -91,7 +98,7 @@ class AuthorController extends Controller
      */
     public function destroy(Author $author)
     {
-        $result = Author::destroy($author->id);
+        $result = $author->delete();
 
         if ($result) {
             $authors = Author::selectRaw('*')->toBase()->paginate(15);
