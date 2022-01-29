@@ -1,4 +1,8 @@
 $(function() {
+    // clean form fields
+    $('#create').on('click',function () {
+        $('#form-data').trigger('reset');
+    });
     // save
     $('#saveButton').on('click', function () {
         let data = $('form').serialize();
