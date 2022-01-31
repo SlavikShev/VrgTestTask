@@ -5,12 +5,12 @@
                 Create author
             </button>
         </div>
-        <div class="filters gap-3 p-3 d-flex flex-column">
+        <form action="{{ route('authors.index') }}" class="filters gap-3 p-3 d-flex flex-column">
             <div class="border-bottom text-center">Filters</div>
-            @include('partials.filter',['filter' => $uniqueAuthorsName, 'title' => 'Name Filter'])
-            @include('partials.filter',['filter' => $uniqueAuthorsSurname, 'title' => 'Surname Filter'])
+            @include('partials.filter',['filter' => $uniqueAuthorsName, 'title' => 'Name Filter', 'inputName' => 'authorName'])
+            @include('partials.filter',['filter' => $uniqueAuthorsSurname, 'title' => 'Surname Filter', 'inputName' => 'authorSurname'])
             <button class="btn btn-info" type="submit">Filter</button>
-        </div>
+        </form>
     </div>
     <div class="main w-100">
         <table class="table">
