@@ -47,4 +47,9 @@ $(function() {
             });
         }
     })
+    // clean form fields
+    $('#create').on('click',function () {
+        $('#form-data').trigger('reset');
+        $('#form-data').attr('data-type', 'create');
+    });
 });

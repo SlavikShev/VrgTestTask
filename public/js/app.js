@@ -1,9 +1,4 @@
 $(function() {
-    // clean form fields
-    $('#create').on('click',function () {
-        $('#form-data').trigger('reset');
-        $('#form-data').attr('data-type', 'create');
-    });
     // save
     $('#saveButton').on('click', function () {
         if ($('#form-data').attr('data-type') === 'create') {
