@@ -17,12 +17,25 @@ class AuthorController extends Controller
     public function index()
     {
         $authors = Author::selectRaw('*')->toBase();
+        $baseAuthors = clone $authors;
         if (request()->has('surnameOrderBy')) {
             $order = request()->get('surnameOrderBy');
             $authors->orderBy('surname',$order);
         }
-        $uniqueAuthorsSurname = $authors->get()->unique('surname')->pluck('surname');
-        $uniqueAuthorsName = $authors->get()->unique('name')->pluck('name');
+
+        if (request()->has('authorName')) {
+            $authorName = request()->get('authorName');
+            $authors->whereIn('name', $authorName,'or');
+        }
+
+        if (request()->has('authorSurname')) {
+            $authorSurname = request()->get('authorSurname');
+            $authors->whereIn('surname', $authorSurname,'or');
+        }
+
+        // todo add alphabetic sort
+        $uniqueAuthorsSurname = $baseAuthors->get()->unique('surname')->pluck('surname');
+        $uniqueAuthorsName = $baseAuthors->get()->unique('name')->pluck('name');
 
         $authors = $authors->paginate(15)->withQueryString();
         return view('authors.index', compact('authors', 'uniqueAuthorsSurname', 'uniqueAuthorsName'));
