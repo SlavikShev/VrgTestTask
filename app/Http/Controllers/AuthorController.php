@@ -21,8 +21,11 @@ class AuthorController extends Controller
             $order = request()->get('surnameOrderBy');
             $authors->orderBy('surname',$order);
         }
+        $uniqueAuthorsSurname = $authors->get()->unique('surname')->pluck('surname');
+        $uniqueAuthorsName = $authors->get()->unique('name')->pluck('name');
+
         $authors = $authors->paginate(15)->withQueryString();
-        return view('authors.index', compact('authors'));
+        return view('authors.index', compact('authors', 'uniqueAuthorsSurname', 'uniqueAuthorsName'));
     }
 
     /**
@@ -47,8 +50,11 @@ class AuthorController extends Controller
         $author = Author::create($request->all());
 
         if ($author) {
-            $authors = Author::selectRaw('*')->toBase()->paginate(15);
-            return response()->view('authors.list',compact('authors'));
+            $authors = Author::selectRaw('*')->toBase();
+            $uniqueAuthorsSurname = $authors->get()->unique('surname')->pluck('surname');
+            $uniqueAuthorsName = $authors->get()->unique('name')->pluck('name');
+            $authors = $authors->paginate(15)->withQueryString();
+            return response()->view('authors.list',compact('authors' , 'uniqueAuthorsName' , 'uniqueAuthorsSurname'));
         }
         else
             return response()->json(['message' => 'error'],500);
@@ -88,8 +94,11 @@ class AuthorController extends Controller
         $result = $author->update($request->all());
 
         if ($result) {
-            $authors = Author::selectRaw('*')->toBase()->paginate(15);
-            return response()->view('authors.list',compact('authors'));
+            $authors = Author::selectRaw('*')->toBase();
+            $uniqueAuthorsSurname = $authors->get()->unique('surname')->pluck('surname');
+            $uniqueAuthorsName = $authors->get()->unique('name')->pluck('name');
+            $authors = $authors->paginate(15)->withQueryString();
+            return response()->view('authors.list',compact('authors', 'uniqueAuthorsName', 'uniqueAuthorsSurname'));
         }
         else
             return response()->json(['message' => 'error'],500);
@@ -106,8 +115,11 @@ class AuthorController extends Controller
         $result = $author->delete();
 
         if ($result) {
-            $authors = Author::selectRaw('*')->toBase()->paginate(15);
-            return response()->view('authors.list',compact('authors'));
+            $authors = Author::selectRaw('*')->toBase();
+            $uniqueAuthorsSurname = $authors->get()->unique('surname')->pluck('surname');
+            $uniqueAuthorsName = $authors->get()->unique('name')->pluck('name');
+            $authors = $authors->paginate(15)->withQueryString();
+            return response()->view('authors.list',compact('authors', 'uniqueAuthorsName', 'uniqueAuthorsSurname'));
         }
         else
             return response()->json(['message' => 'error'],500);
