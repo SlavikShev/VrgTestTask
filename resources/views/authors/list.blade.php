@@ -7,28 +7,8 @@
         </div>
         <div class="filters gap-3 p-3 d-flex flex-column">
             <div class="border-bottom text-center">Filters</div>
-            <div class="nameFilter border p-2">
-                <div class="text-center border-bottom mb-1">Name Filter</div>
-                @foreach($uniqueAuthorsName as $key => $name)
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="nameFilter{{ $key }}">
-                        <label class="form-check-label" for="nameFilter{{ $key }}">
-                            {{ $name }}
-                        </label>
-                    </div>
-                @endforeach
-            </div>
-            <div class="surnameFilter border p-2">
-                <div class="text-center border-bottom mb-1">Surname Filter</div>
-                @foreach($uniqueAuthorsSurname as $key => $name)
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="surnameFilter{{ $key }}">
-                        <label class="form-check-label" for="surnameFilter{{ $key }}">
-                            {{ $name }}
-                        </label>
-                    </div>
-                @endforeach
-            </div>
+            @include('partials.filter',['filter' => $uniqueAuthorsName, 'title' => 'Name Filter'])
+            @include('partials.filter',['filter' => $uniqueAuthorsSurname, 'title' => 'Surname Filter'])
             <button class="btn btn-info" type="submit">Filter</button>
         </div>
     </div>
@@ -39,6 +19,7 @@
                 <th scope="col">#</th>
                 <th scope="col">Name</th>
                 <th scope="col">Surname
+{{--                    todo возможно переделать на link вместо формы--}}
                     <form action="{{ route('authors.index') }}" method="get" class="d-inline">
                         <input type="hidden" value="asc" name="surnameOrderBy">
                         <button type="submit">
