@@ -18,19 +18,17 @@ class AuthorController extends Controller
     {
         $authors = Author::toBase();
         $baseAuthors = clone $authors;
+
         if (request()->has('surnameOrderBy')) {
-            $order = request()->get('surnameOrderBy');
-            $authors->orderBy('surname',$order);
+            $authors->orderBy('surname', request('surnameOrderBy'));
         }
 
         if (request()->has('authorName')) {
-            $authorName = request()->get('authorName');
-            $authors->whereIn('name', $authorName,'or');
+            $authors->whereIn('name', request('authorName'),'or');
         }
 
         if (request()->has('authorSurname')) {
-            $authorSurname = request()->get('authorSurname');
-            $authors->whereIn('surname', $authorSurname,'or');
+            $authors->whereIn('surname', request('authorSurname'),'or');
         }
 
         // todo add alphabetic sort
