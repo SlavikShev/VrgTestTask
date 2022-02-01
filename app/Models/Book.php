@@ -9,5 +9,8 @@ class Book extends Model
 {
     use HasFactory;
 
+    protected $guarded = ['id'];
+    public $timestamps = false;
+
     protected $dateFormat = 'd-m-Y H:i:s';
 }
