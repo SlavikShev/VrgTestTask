@@ -16,7 +16,7 @@ class AuthorController extends Controller
      */
     public function index()
     {
-        $authors = Author::selectRaw('*')->toBase();
+        $authors = Author::toBase();
         $baseAuthors = clone $authors;
         if (request()->has('surnameOrderBy')) {
             $order = request()->get('surnameOrderBy');
