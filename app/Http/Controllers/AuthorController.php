@@ -17,7 +17,6 @@ class AuthorController extends Controller
     public function index()
     {
         $authors = Author::toBase();
-        $baseAuthors = clone $authors;
 
         if (request()->has('surnameOrderBy')) {
             $authors->orderBy('surname', request('surnameOrderBy'));
@@ -32,8 +31,8 @@ class AuthorController extends Controller
         }
 
         // todo add alphabetic sort
-        $uniqueAuthorsSurname = $baseAuthors->get()->unique('surname')->pluck('surname');
-        $uniqueAuthorsName = $baseAuthors->get()->unique('name')->pluck('name');
+        $uniqueAuthorsSurname = Author::distinct()->pluck('surname');
+        $uniqueAuthorsName = Author::distinct()->pluck('name');
 
         $authors = $authors->paginate(15)->withQueryString();
         return view('authors.index', compact('authors', 'uniqueAuthorsSurname', 'uniqueAuthorsName'));
