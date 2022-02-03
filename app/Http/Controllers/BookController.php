@@ -16,8 +16,10 @@ class BookController extends Controller
     public function index()
     {
         $authors = Author::toBase()->get();
+        $books = Book::paginate(15);
+//        todo optimize query to get 1 query instead of amount of books
 
-        return view('books.index', compact('authors'));
+        return view('books.index', compact('authors', 'books'));
     }
 
     /**

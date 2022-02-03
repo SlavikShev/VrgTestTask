@@ -3,9 +3,7 @@
 @section('title', 'Authors')
 
 @section('content')
-    <button id="create" type="button" class="btn btn-primary text-nowrap m-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
-        Create book
-    </button>
+
     {{--  move modal to balde and pass there form html and rename example fields  --}}
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -51,5 +49,5 @@
         </div>
     </div>
 
-    <script src="{{ asset('js/books.js') }}"></script>
+    @include('books.list')
 @endsection

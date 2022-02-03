@@ -47,6 +47,7 @@
                     <td class="author_surname">{{ $author->surname }}</td>
                     <td class="author_patronymic">{{ $author->patronymic }}</td>
                     <td><i class="fas fa-edit editButton" data-id="{{ $author->id }}" data-bs-toggle="modal" data-bs-target="#exampleModal"></i></td>
+{{--                    todo remove token from data attribute and take it from mata tag in title--}}
                     <td><i class="fas fa-trash deleteButton" data-id="{{ $author->id }}" data-token="{{ @csrf_token() }}"></i></td>
                 </tr>
             @endforeach
