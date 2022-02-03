@@ -18,21 +18,22 @@
             <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Title</th>
+                <th scope="col">Title
+                    {{--todo возможно переделать на link вместо формы--}}
+                    <form action="{{ route('books.index') }}" method="get" class="d-inline">
+                        <input type="hidden" value="asc" name="titleOrderBy">
+                        <button type="submit">
+                            <i class="fas fa-arrow-up"></i>
+                        </button>
+                    </form>
+                    <form action="{{ route('books.index') }}" method="get" class="d-inline">
+                        <input type="hidden" value="desc" name="titleOrderBy">
+                        <button type="submit">
+                            <i class="fas fa-arrow-down"></i>
+                        </button>
+                    </form>
+                </th>
                 <th scope="col">Short Description
-                    {{--                    todo возможно переделать на link вместо формы--}}
-{{--                    <form action="{{ route('books.index') }}" method="get" class="d-inline">--}}
-{{--                        <input type="hidden" value="asc" name="surnameOrderBy">--}}
-{{--                        <button type="submit">--}}
-{{--                            <i class="fas fa-arrow-up"></i>--}}
-{{--                        </button>--}}
-{{--                    </form>--}}
-{{--                    <form action="{{ route('books.index') }}" method="get" class="d-inline">--}}
-{{--                        <input type="hidden" value="desc" name="surnameOrderBy">--}}
-{{--                        <button type="submit">--}}
-{{--                            <i class="fas fa-arrow-down"></i>--}}
-{{--                        </button>--}}
-{{--                    </form>--}}
                 </th>
                 <th scope="col">Authors</th>
                 <th scope="col">Book Cover</th>

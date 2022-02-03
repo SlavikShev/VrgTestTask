@@ -16,7 +16,13 @@ class BookController extends Controller
     public function index()
     {
         $authors = Author::toBase()->get();
-        $books = Book::paginate(15);
+
+        $books = Book::select();
+        if (request()->has('titleOrderBy')) {
+            $books->orderBy('title', request('titleOrderBy'));
+        }
+        $books = $books->paginate(15);
+
         $booksTitleList = Book::toBase()->pluck('title');
         $booksAuthorsList = Author::selectRaw('CONCAT(name, " ", surname ) as full_name')->pluck('full_name');
 
