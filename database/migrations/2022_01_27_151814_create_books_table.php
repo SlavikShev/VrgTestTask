@@ -18,7 +18,7 @@ class CreateBooksTable extends Migration
             $table->string('title');
             $table->string('short_description')->default('');
             $table->string('image')->default('');
-            $table->timestamp('publication_date');
+            $table->date('publication_date');
         });
     }
 
