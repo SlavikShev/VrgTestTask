@@ -8,8 +8,8 @@
         <form action="{{ route('books.index') }}" class="filters gap-3 p-3 d-flex flex-column">
             <div class="border-bottom text-center">Filters</div>
             {{--            todo сделать кнопу выбрать всё и сняты выделение со всех--}}
-{{--            @include('partials.filter',['filter' => $uniqueAuthorsName, 'title' => 'Name Filter', 'inputName' => 'authorName'])--}}
-{{--            @include('partials.filter',['filter' => $uniqueAuthorsSurname, 'title' => 'Surname Filter', 'inputName' => 'authorSurname'])--}}
+            @include('partials.filter',['filter' => $booksTitleList, 'title' => 'Book title Filter', 'inputName' => 'book_title'])
+            @include('partials.filter',['filter' => $booksAuthorsList, 'title' => 'Authors Filter', 'inputName' => 'book_author'])
             <button class="btn btn-info" type="submit">Filter</button>
         </form>
     </div>

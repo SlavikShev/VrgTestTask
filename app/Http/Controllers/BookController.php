@@ -17,9 +17,11 @@ class BookController extends Controller
     {
         $authors = Author::toBase()->get();
         $books = Book::paginate(15);
-//        todo optimize query to get 1 query instead of amount of books
+        $booksTitleList = Book::toBase()->pluck('title');
+        $booksAuthorsList = Author::selectRaw('CONCAT(name, " ", surname ) as full_name')->pluck('full_name');
 
-        return view('books.index', compact('authors', 'books'));
+//        todo optimize query to get 1 query instead of amount of books
+        return view('books.index', compact('authors', 'books', 'booksTitleList', 'booksAuthorsList'));
     }
 
     /**
