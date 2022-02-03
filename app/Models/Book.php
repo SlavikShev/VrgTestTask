@@ -13,4 +13,8 @@ class Book extends Model
     public $timestamps = false;
 
     protected $dateFormat = 'd-m-Y H:i:s';
+
+    public function authors () {
+        return $this->belongsToMany(Author::class, 'book_authors');
+    }
 }
