@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Author;
 use App\Models\Book;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class BookController extends Controller
 {
@@ -44,7 +46,7 @@ class BookController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse|Response
      */
     public function store(Request $request)
     {
@@ -58,8 +60,21 @@ class BookController extends Controller
         }
         $book = Book::create($data);
 
-        $authors = $data['book_authors'];
-        $book->authors()->attach($authors);
+        $data_authors = $data['book_authors'];
+        $book->authors()->attach($data_authors);
+
+        $authors = Author::toBase()->get();
+
+        $books = Book::select();
+        if (request()->has('titleOrderBy')) {
+            $books->orderBy('title', request('titleOrderBy'));
+        }
+        $books = $books->paginate(15);
+
+        $booksTitleList = Book::toBase()->pluck('title');
+        $booksAuthorsList = Author::selectRaw('CONCAT(name, " ", surname ) as full_name')->pluck('full_name');
+//        todo optimize query to get 1 query instead    of amount of books
+        return response()->view('books.list',compact('authors', 'books', 'booksTitleList', 'booksAuthorsList'));
     }
 
     /**
@@ -104,6 +119,19 @@ class BookController extends Controller
      */
     public function destroy(Book $book)
     {
-        //
+        $book->delete();
+
+        $authors = Author::toBase()->get();
+
+        $books = Book::select();
+        if (request()->has('titleOrderBy')) {
+            $books->orderBy('title', request('titleOrderBy'));
+        }
+        $books = $books->paginate(15);
+
+        $booksTitleList = Book::toBase()->pluck('title');
+        $booksAuthorsList = Author::selectRaw('CONCAT(name, " ", surname ) as full_name')->pluck('full_name');
+//        todo optimize query to get 1 query instead    of amount of books
+        return response()->view('books.list',compact('authors', 'books', 'booksTitleList', 'booksAuthorsList'));
     }
 }

@@ -13,7 +13,6 @@ $(function() {
                 url: route,
                 method: 'post',
                 data: fd,
-                dataType: "json",
                 contentType: false,
                 processData: false,
                 headers: {
@@ -25,4 +24,24 @@ $(function() {
             });
         }
     })
+    // delete
+    $('.deleteButton').on('click', function () {
+        let res = confirm('are you sure?');
+        if (res) {
+            let route = $('#form-data').data('route');
+            let id = $(this).data('id');
+            let token = $(this).data('token');
+            $.ajax({
+                url: route + '/' + id,
+                method: 'delete',
+                data: {
+                    "id": id,
+                    "_token": token
+                },
+                success: function (data) {
+                    $('#books_list').replaceWith(data);
+                }
+            });
+        }
+    });
 });
