@@ -20,7 +20,7 @@ $(function() {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function (data) {
-                    $('#authors_list').replaceWith(data);
+                    $('#books_list').replaceWith(data);
                 }
             });
         }

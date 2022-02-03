@@ -9,7 +9,7 @@ $(function() {
                 method: 'post',
                 data: data,
                 success: function (data) {
-                    $('#books_list').replaceWith(data);
+                    $('#authors_list').replaceWith(data);
                 }
             });
         }
