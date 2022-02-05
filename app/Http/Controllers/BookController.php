@@ -23,10 +23,22 @@ class BookController extends Controller
         if (request()->has('titleOrderBy')) {
             $books->orderBy('title', request('titleOrderBy'));
         }
-        $books = $books->paginate(15);
+        if (request()->has('bookTitle')){
+            $books->whereIn('title', request('bookTitle'),'or');
+        }
+        if (request()->has('bookAuthor')){
+            $books->join('book_authors','books.id','=','book_authors.book_id')
+                ->whereIn('author_id',request('bookAuthor'))
+                ->groupBy('id');
+        }
+
+        $books = $books->paginate(15)->withQueryString();
 
         $booksTitleList = Book::toBase()->pluck('title');
-        $booksAuthorsList = Author::selectRaw('CONCAT(name, " ", surname ) as full_name')->pluck('full_name');
+        // todo make 1 request instead of two
+        $book_authors_id_list = Author::get('id')->pluck('id')->toArray();
+        $booksAuthorsFullNameList = Author::selectRaw('id, CONCAT(name, " ", surname ) as full_name')->pluck('full_name')->toArray();
+        $booksAuthorsList = array_combine($book_authors_id_list, $booksAuthorsFullNameList);
 
 //        todo optimize query to get 1 query instead of amount of books
         return view('books.index', compact('authors', 'books', 'booksTitleList', 'booksAuthorsList'));

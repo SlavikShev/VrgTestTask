@@ -5,9 +5,14 @@
             <input class="form-check-input"
                    name="{{ $inputName }}[]"
                    type="checkbox"
-                   value="{{ $item }}"
+                   value="{{ isset($custom_id) ? $key : $item }}"
                    id="{{ $inputName }}{{ $key }}"
-                    @if(isset($_GET[$inputName]))@if (in_array($item, $_GET[$inputName])) checked @endif @endif
+                    @if(isset($_GET[$inputName]))
+                        @if (in_array($item, $_GET[$inputName])) checked
+                        @elseif (isset($custom_id))
+                           @if (in_array($key, $_GET[$inputName])) checked @endif
+                        @endif
+                    @endif
             >
             <label class="form-check-label" for="{{ $inputName }}{{ $key }}">
                 {{ $item }}
