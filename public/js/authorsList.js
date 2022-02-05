@@ -36,10 +36,11 @@ $(function() {
     });
     // edit
     $('.editButton').on('click', function () {
-        // fill modal fields
+        // get values from table row
         let name = $(this).closest('tr').find('.author_name').html();
         let surname = $(this).closest('tr').find('.author_surname').html();
         let patronymic = $(this).closest('tr').find('.author_patronymic').html();
+        // put these values in modal fields
         $('#form-data').find('#name').val(name);
         $('#form-data').find('#surname').val(surname);
         $('#form-data').find('#patronymic').val(patronymic);

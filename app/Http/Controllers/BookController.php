@@ -108,7 +108,31 @@ class BookController extends Controller
      */
     public function update(Request $request, Book $book)
     {
-        //
+        $data = $request->all();
+        if ($request->file('bookCover')) {
+            $image = $request->file('bookCover');
+            // todo find better hash function
+            $new_name = rand() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('book_covers'), $new_name);
+            $data['image'] = $new_name;
+        }
+        $result = $book->update($data);
+        $data_authors = $data['book_authors'];
+        $book->authors()->detach();
+        $book->authors()->attach($data_authors);
+
+        $authors = Author::toBase()->get();
+
+        $books = Book::select();
+        if (request()->has('titleOrderBy')) {
+            $books->orderBy('title', request('titleOrderBy'));
+        }
+        $books = $books->paginate(15);
+
+        $booksTitleList = Book::toBase()->pluck('title');
+        $booksAuthorsList = Author::selectRaw('CONCAT(name, " ", surname ) as full_name')->pluck('full_name');
+//        todo optimize query to get 1 query instead of amount of books
+        return response()->view('books.list',compact('authors', 'books', 'booksTitleList', 'booksAuthorsList'));
     }
 
     /**

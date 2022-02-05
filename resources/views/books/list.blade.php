@@ -46,18 +46,20 @@
             @foreach($books as $key => $book)
                 <tr>
                     <th scope="row"> {{ ($books->currentpage()-1) * $books->perpage() + $key + 1 }}</th>
-                    <td class="author_name">{{ $book->title }}</td>
+                    <td class="title">{{ $book->title }}</td>
 {{--                    todo limit to first 50 chars and on click show entire description--}}
-                    <td class="author_surname">{{ $book->short_description }}</td>
-                    <td class="author_patronymic">
-                        <ul>
+                    <td class="short_description">{{ $book->short_description }}</td>
+                    <td>
+                        <ul class="book_authors">
                             @foreach($book->authors as $book_author)
-                                <li>{{ $book_author->name }} {{$book_author->surname}}</li>
+                                <li data-id="{{ $book_author->id }}">{{ $book_author->name }} {{$book_author->surname}}</li>
                             @endforeach
                         </ul>
                     </td>
                     <td class="book_cover">
-                        <img src="{{ asset('book_covers/'.$book->image)   }}" alt="" style="width: 60px;">
+                        @if($book->image)
+                            <img src="{{ asset('book_covers/'.$book->image) }}" style="width: 60px;">
+                        @endif
                     </td>
                     <td class="publication_date">{{ $book->publication_date }}</td>
                     {{--todo rename example model to more appropriate name--}}

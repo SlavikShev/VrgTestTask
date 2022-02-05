@@ -29,7 +29,7 @@
                         </div>
 {{--                        todo move select in modal window for convenience--}}
                         <div class="mb-3">
-                            <select class="form-select" multiple aria-label="multiple select example" name="book_authors[]">
+                            <select class="form-select" multiple aria-label="multiple select example" id="book_authors" name="book_authors[]">
 {{--                                todo accessor for author model to return name and surname}}--}}
                                 @foreach($authors as $author)
                                     <option value="{{ $author->id }}">{{ $author->name }} {{ $author->surname }}</option>
