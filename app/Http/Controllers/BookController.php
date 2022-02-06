@@ -40,7 +40,7 @@ class BookController extends Controller
         $booksAuthorsFullNameList = Author::selectRaw('id, CONCAT(name, " ", surname ) as full_name')->pluck('full_name')->toArray();
         $booksAuthorsList = array_combine($book_authors_id_list, $booksAuthorsFullNameList);
 
-//        todo optimize query to get 1 query instead of amount of books
+//        todo optimize query to get 1 query using function with, to not get a lot of queries
         return view('books.index', compact('authors', 'books', 'booksTitleList', 'booksAuthorsList'));
     }
 

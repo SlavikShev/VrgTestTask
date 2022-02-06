@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AuthorRequest;
 use App\Models\Author;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class AuthorController extends Controller
@@ -51,10 +51,10 @@ class AuthorController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  AuthorRequest  $request
      * @return JsonResponse|Response
      */
-    public function store(Request $request)
+    public function store(AuthorRequest $request)
     {
         // todo add validation
         $author = Author::create($request->all());
@@ -65,8 +65,7 @@ class AuthorController extends Controller
             $uniqueAuthorsName = $authors->get()->unique('name')->pluck('name');
             $authors = $authors->paginate(15)->withQueryString();
             return response()->view('authors.list',compact('authors' , 'uniqueAuthorsName' , 'uniqueAuthorsSurname'));
-        }
-        else
+        } else
             return response()->json(['message' => 'error'],500);
     }
 
@@ -95,11 +94,11 @@ class AuthorController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  AuthorRequest  $request
      * @param  \App\Models\Author  $author
      * @return JsonResponse|Response
      */
-    public function update(Request $request, Author $author)
+    public function update(AuthorRequest $request, Author $author)
     {
         $result = $author->update($request->all());
 
