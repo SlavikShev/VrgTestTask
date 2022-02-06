@@ -2,9 +2,13 @@ $(function() {
     $('#create').on('click', function () {
         $('#form-data').trigger('reset');
         $('#form-data').attr('data-type', 'create');
+        // remove old errors
+        $('.error-class').remove();
     });
     // save
     $('#saveButton').on('click', function () {
+        // remove old errors
+        $('.error-class').remove();
         if ($('#form-data').attr('data-type') === 'create') {
             let form = document.getElementById('form-data')
             let fd = new FormData(form);
@@ -20,6 +24,12 @@ $(function() {
                 },
                 success: function (data) {
                     $('#books_list').replaceWith(data);
+                },
+                error: function (data) {
+                    let errors = data.responseJSON.errors;
+                    for (let key in errors) {
+                        $(`#${key}`).after('<p class="text-danger error-class">' + errors[key] + '</p>')
+                    }
                 }
             });
         }
@@ -46,6 +56,8 @@ $(function() {
     });
     // edit
     $('.editButton').on('click', function () {
+        // remove old errors
+        $('.error-class').remove();
         // get values from table row
         let title = $(this).closest('tr').find('.title').html();
         let short_description = $(this).closest('tr').find('.short_description').html();
@@ -60,7 +72,7 @@ $(function() {
         $('#form-data').find('#shortDescription').val(short_description);
         $('#form-data').find('#book_authors').val(selectedAuthors);
         // $('#form-data').find('#bookCover').before('');
-        $('#form-data').find('#publicationDate').val(publication_date);
+        $('#form-data').find('#publication_date').val(publication_date);
         $('#form-data').attr('data-type', 'edit');
         $('#form-data').attr('data-id', $(this).attr('data-id'));
     });
@@ -84,6 +96,12 @@ $(function() {
                 },
                 success: function (data) {
                     $('#books_list').replaceWith(data);
+                },
+                error: function (data) {
+                    let errors = data.responseJSON.errors;
+                    for (let key in errors) {
+                        $(`#${key}`).after('<p class="text-danger error-class">' + errors[key] + '</p>')
+                    }
                 }
             });
         }

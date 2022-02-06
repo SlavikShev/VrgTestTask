@@ -25,7 +25,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="bookCover" class="form-label">Book cover</label>
-                            <input class="form-control" type="file" id="bookCover" name="bookCover" accept="image/x-png,image/gif,image/jpeg">
+                            <input class="form-control" type="file" id="bookCover" name="bookCover" accept=".jpg,.png">
                         </div>
 {{--                        todo move select in modal window for convenience--}}
                         <div class="mb-3">
@@ -38,7 +38,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="publicationDate" class="form-label">Publication date</label>
-                            <input class="form-control" type="date" id="publicationDate" name="publication_date">
+                            <input class="form-control" type="date" id="publication_date" name="publication_date">
                         </div>
                     </form>
                 </div>

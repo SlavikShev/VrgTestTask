@@ -56,7 +56,7 @@ class AuthorController extends Controller
      */
     public function store(AuthorRequest $request)
     {
-        // todo add validation
+        // todo add message after successful creating author
         $author = Author::create($request->all());
 
         if ($author) {
