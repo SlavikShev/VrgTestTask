@@ -4,7 +4,7 @@ $(function() {
         // remove old errors
         $('.error-class').remove();
         if ($('#form-data').attr('data-type') === 'create') {
-            let data = $('form').serialize();
+            let data = $('#form-data').serialize();
             let route = $('#form-data').data('route');
             $.ajax({
                 url: route,
@@ -60,7 +60,7 @@ $(function() {
     // update data
     $('#saveButton').on('click', function () {
         if ($('#form-data').attr('data-type') === 'edit') {
-            let data = $('form').serialize();
+            let data = $('#form-data').serialize();
             let route = $('#form-data').data('route');
             let id = $('#form-data').attr('data-id');
             $.ajax({

@@ -4,11 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AuthorRequest;
 use App\Models\Author;
+use App\Repositories\AuthorRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 
 class AuthorController extends Controller
 {
+    private $authorRepository;
+
+    public function __construct()
+    {
+        $this->authorRepository = app(AuthorRepository::class);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -16,36 +24,10 @@ class AuthorController extends Controller
      */
     public function index()
     {
-        $authors = Author::toBase();
-
-        if (request()->has('surnameOrderBy')) {
-            $authors->orderBy('surname', request('surnameOrderBy'));
-        }
-
-        if (request()->has('authorName')) {
-            $authors->whereIn('name', request('authorName'),'or');
-        }
-
-        if (request()->has('authorSurname')) {
-            $authors->whereIn('surname', request('authorSurname'),'or');
-        }
-
         // todo add alphabetic sort
-        $uniqueAuthorsSurname = Author::distinct()->pluck('surname');
-        $uniqueAuthorsName = Author::distinct()->pluck('name');
+        $compactVars = $this->authorRepository->getVarsForView(request());
 
-        $authors = $authors->paginate(15)->withQueryString();
-        return view('authors.index', compact('authors', 'uniqueAuthorsSurname', 'uniqueAuthorsName'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return view('authors.index', $compactVars);
     }
 
     /**
@@ -57,38 +39,14 @@ class AuthorController extends Controller
     public function store(AuthorRequest $request)
     {
         // todo add message after successful creating author
-        $author = Author::create($request->all());
+        $result = $this->authorRepository->createModel($request);
 
-        if ($author) {
-            $authors = Author::selectRaw('*')->toBase();
-            $uniqueAuthorsSurname = $authors->get()->unique('surname')->pluck('surname');
-            $uniqueAuthorsName = $authors->get()->unique('name')->pluck('name');
-            $authors = $authors->paginate(15)->withQueryString();
-            return response()->view('authors.list',compact('authors' , 'uniqueAuthorsName' , 'uniqueAuthorsSurname'));
+        if ($result) {
+            $compactVars = $this->authorRepository->getVarsForView(request());
+
+            return response()->view('authors.list', $compactVars);
         } else
             return response()->json(['message' => 'error'],500);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Author  $author
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Author $author)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Author  $author
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Author $author)
-    {
-        //
     }
 
     /**
@@ -100,14 +58,12 @@ class AuthorController extends Controller
      */
     public function update(AuthorRequest $request, Author $author)
     {
-        $result = $author->update($request->all());
+        $result = $this->authorRepository->updateModel($author, $request);
 
         if ($result) {
-            $authors = Author::selectRaw('*')->toBase();
-            $uniqueAuthorsSurname = $authors->get()->unique('surname')->pluck('surname');
-            $uniqueAuthorsName = $authors->get()->unique('name')->pluck('name');
-            $authors = $authors->paginate(15)->withQueryString();
-            return response()->view('authors.list',compact('authors', 'uniqueAuthorsName', 'uniqueAuthorsSurname'));
+            $compactVars = $this->authorRepository->getVarsForView(request());
+
+            return response()->view('authors.list', $compactVars);
         }
         else
             return response()->json(['message' => 'error'],500);
@@ -121,14 +77,12 @@ class AuthorController extends Controller
      */
     public function destroy(Author $author)
     {
-        $result = $author->delete();
+        $result = $this->authorRepository->deleteModel($author);
 
         if ($result) {
-            $authors = Author::selectRaw('*')->toBase();
-            $uniqueAuthorsSurname = $authors->get()->unique('surname')->pluck('surname');
-            $uniqueAuthorsName = $authors->get()->unique('name')->pluck('name');
-            $authors = $authors->paginate(15)->withQueryString();
-            return response()->view('authors.list',compact('authors', 'uniqueAuthorsName', 'uniqueAuthorsSurname'));
+            $compactVars = $this->authorRepository->getVarsForView(request());
+
+            return response()->view('authors.list', $compactVars);
         }
         else
             return response()->json(['message' => 'error'],500);
