@@ -12,4 +12,8 @@ class Author extends Model
     protected $guarded = ['id'];
 
     public $timestamps = false;
+
+    public function books () {
+        return $this->belongsToMany(Book::class, 'book_authors');
+    }
 }
