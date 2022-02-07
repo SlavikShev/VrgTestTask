@@ -3,28 +3,12 @@
 namespace App\Repositories;
 
 use App\Models\Author;
-use JasonGuru\LaravelMakeRepository\Repository\BaseRepository;
-use App\Models\Author as Model;
 
-/**
- * Class AuthorRepository.
- */
-class AuthorRepository extends BaseRepository
+class AuthorRepository extends CoreRepository
 {
-    public function __construct()
-    {
-        parent::__construct();
 
-        $this->model = Model::class;
-    }
-
-    /**
-     * @return string
-     *  Return the model
-     */
-    public function model()
-    {
-        return Model::class;
+    protected function getModelClass() {
+        return Author::class;
     }
 
     public function buildQuery ($request = null)
@@ -44,19 +28,7 @@ class AuthorRepository extends BaseRepository
     }
 
     public function getUniqueField (string $field) {
-        return Author::distinct()->pluck($field);
-    }
-
-    public function createModel ($request) {
-        return Author::create($request->all());
-    }
-
-    public function updateModel ($author, $request) {
-        return $author->update($request->all());
-    }
-
-    public function deleteModel ($author) {
-        return $author->delete();
+        return Author::distinct()->orderBy($field)->pluck($field);
     }
 
     public function getVarsForView ($request) {
