@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Author;
+use Illuminate\Support\Facades\DB;
 
 class AuthorRepository extends CoreRepository
 {
@@ -49,7 +50,10 @@ class AuthorRepository extends CoreRepository
 
     public function getBookAuthorsList ()
     {
-        $query = Author::selectRaw('id, CONCAT(name, " ", surname ) as full_name')->get();
+        $authorsInBooks = DB::table('book_authors')->distinct('author_id')->pluck('author_id');
+        $query = Author::selectRaw('id, CONCAT(name, " ", surname ) as full_name')
+            ->whereIn('id', $authorsInBooks)
+            ->get();
         $bookAuthorsIds = $query->pluck('id')->toArray();
         $bookFullNames = $query->pluck('full_name')->toArray();
         return array_combine($bookAuthorsIds, $bookFullNames);
