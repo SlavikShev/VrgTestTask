@@ -13,14 +13,14 @@ abstract class CoreRepository
 
     abstract protected function getModelClass ();
 
-    public function deleteModel ($author)
+    public function deleteModel ($model)
     {
-        return $author->delete();
+        return $model->delete();
     }
 
-    public function updateModel ($author, $request)
+    public function updateModel ($model, $request)
     {
-        return $author->update($request->all());
+        return $model->update($request->all());
     }
 
     public function createModel ($request)

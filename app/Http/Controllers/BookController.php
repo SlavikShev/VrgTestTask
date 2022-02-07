@@ -111,23 +111,20 @@ class BookController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Book  $book
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse|Response
      */
     public function destroy(Book $book)
     {
-        $book->delete();
+        $result = $this->bookRepository->deleteModel($book);
 
-        $authors = Author::toBase()->get();
+        if ($result) {
+            $authors = $this->authorRepository->getAllBaseRecords();
+            $books = $this->bookRepository->buildQuery(request());
+            $booksTitleList = $this->bookRepository->getUniqueField('title');
+            $booksAuthorsList = $this->authorRepository->getBookAuthorsList();
 
-        $books = Book::select();
-        if (request()->has('titleOrderBy')) {
-            $books->orderBy('title', request('titleOrderBy'));
-        }
-        $books = $books->paginate(15);
-
-        $booksTitleList = Book::toBase()->pluck('title');
-        $booksAuthorsList = Author::selectRaw('CONCAT(name, " ", surname ) as full_name')->pluck('full_name');
-
-        return response()->view('books.list',compact('authors', 'books', 'booksTitleList', 'booksAuthorsList'));
+            return response()->view('books.list',compact('authors', 'books', 'booksTitleList', 'booksAuthorsList'));
+        } else
+            return response()->json(['message' => 'error'],500);
     }
 }
