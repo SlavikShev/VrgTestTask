@@ -9,7 +9,8 @@ class AuthorRepository extends CoreRepository
     /**
      * @return string
      */
-    protected function getModelClass() {
+    protected function getModelClass()
+    {
         return Author::class;
     }
 
@@ -41,21 +42,20 @@ class AuthorRepository extends CoreRepository
      * @param string $field
      * @return \Illuminate\Support\Collection
      */
-    public function getUniqueField (string $field) {
+    public function getUniqueField (string $field)
+    {
         return Author::distinct()->orderBy($field)->pluck($field);
     }
 
-    /**
-     * return array to set it in template
-     *
-     * @param $request
-     * @return array
-     */
-    public function getVarsForView ($request) {
-        $authors = $this->buildQuery($request);
-        $uniqueAuthorsSurname = $this->getUniqueField('surname');
-        $uniqueAuthorsName = $this->getUniqueField('name');
+    public function getBookAuthorsList ()
+    {
+        $query = Author::selectRaw('id, CONCAT(name, " ", surname ) as full_name')->get();
+        $bookAuthorsIds = $query->pluck('id')->toArray();
+        $bookFullNames = $query->pluck('full_name')->toArray();
+        return array_combine($bookAuthorsIds, $bookFullNames);
+    }
 
-        return compact('authors', 'uniqueAuthorsSurname', 'uniqueAuthorsName');
+    public function getAllBaseRecords () {
+        return Author::toBase()->get();
     }
 }
