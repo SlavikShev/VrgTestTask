@@ -6,11 +6,19 @@ use App\Models\Author;
 
 class AuthorRepository extends CoreRepository
 {
-
+    /**
+     * @return string
+     */
     protected function getModelClass() {
         return Author::class;
     }
 
+    /**
+     * return result with paginate
+     *
+     * @param null $request
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
     public function buildQuery ($request = null)
     {
         $authors = Author::toBase();
@@ -27,10 +35,22 @@ class AuthorRepository extends CoreRepository
         return $authors->paginate(15)->withQueryString();
     }
 
+    /**
+     * return unique ordered field from db
+     *
+     * @param string $field
+     * @return \Illuminate\Support\Collection
+     */
     public function getUniqueField (string $field) {
         return Author::distinct()->orderBy($field)->pluck($field);
     }
 
+    /**
+     * return array to set it in template
+     *
+     * @param $request
+     * @return array
+     */
     public function getVarsForView ($request) {
         $authors = $this->buildQuery($request);
         $uniqueAuthorsSurname = $this->getUniqueField('surname');

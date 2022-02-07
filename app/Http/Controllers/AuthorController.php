@@ -10,8 +10,9 @@ use Illuminate\Http\Response;
 
 class AuthorController extends Controller
 {
-    private $authorRepository;
 
+    private $authorRepository;
+    
     public function __construct()
     {
         $this->authorRepository = app(AuthorRepository::class);
@@ -24,7 +25,6 @@ class AuthorController extends Controller
      */
     public function index()
     {
-        // todo add alphabetic sort
         $compactVars = $this->authorRepository->getVarsForView(request());
 
         return view('authors.index', $compactVars);
@@ -64,8 +64,7 @@ class AuthorController extends Controller
             $compactVars = $this->authorRepository->getVarsForView(request());
 
             return response()->view('authors.list', $compactVars);
-        }
-        else
+        } else
             return response()->json(['message' => 'error'],500);
     }
 
@@ -83,8 +82,7 @@ class AuthorController extends Controller
             $compactVars = $this->authorRepository->getVarsForView(request());
 
             return response()->view('authors.list', $compactVars);
-        }
-        else
+        } else
             return response()->json(['message' => 'error'],500);
     }
 }
