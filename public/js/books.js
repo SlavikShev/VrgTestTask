@@ -1,3 +1,4 @@
+$('*').off('click');
 $(function() {
     $('#create').on('click', function () {
         $('#form-data').trigger('reset');

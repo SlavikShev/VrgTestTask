@@ -58,4 +58,18 @@ class AuthorRepository extends CoreRepository
     public function getAllBaseRecords () {
         return Author::toBase()->get();
     }
+
+    /**
+     * return array to set it in template
+     *
+     * @param $request
+     * @return array
+     */
+    public function getVarsForView ($request) {
+        $authors = $this->buildQuery($request);
+        $uniqueAuthorsSurname = $this->getUniqueField('surname');
+        $uniqueAuthorsName = $this->getUniqueField('name');
+
+        return compact('authors', 'uniqueAuthorsSurname', 'uniqueAuthorsName');
+    }
 }

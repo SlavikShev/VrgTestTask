@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\BookRequest;
-use App\Models\Author;
 use App\Models\Book;
 use App\Repositories\AuthorRepository;
 use App\Repositories\BookRepository;
@@ -44,30 +43,17 @@ class BookController extends Controller
      */
     public function store(BookRequest $request)
     {
-        $data = $request->all();
-        if ($request->file('bookCover')) {
-            $image = $request->file('bookCover');
-            $new_name = rand() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('book_covers'), $new_name);
-            $data['image'] = $new_name;
-        }
-        $book = Book::create($data);
+        $result = $this->bookRepository->createModel($request);
 
-        $data_authors = $data['book_authors'];
-        $book->authors()->attach($data_authors);
+        if ($result) {
+            $authors = $this->authorRepository->getAllBaseRecords();
+            $books = $this->bookRepository->buildQuery();
+            $booksTitleList = $this->bookRepository->getUniqueField('title');
+            $booksAuthorsList = $this->authorRepository->getBookAuthorsList();
 
-        $authors = Author::toBase()->get();
-
-        $books = Book::select();
-        if (request()->has('titleOrderBy')) {
-            $books->orderBy('title', request('titleOrderBy'));
-        }
-        $books = $books->paginate(15);
-
-        $booksTitleList = Book::toBase()->pluck('title');
-        $booksAuthorsList = Author::selectRaw('CONCAT(name, " ", surname ) as full_name')->pluck('full_name');
-//        todo optimize query to get 1 query instead    of amount of books
-        return response()->view('books.list',compact('authors', 'books', 'booksTitleList', 'booksAuthorsList'));
+            return response()->view('books.list', compact('authors', 'books', 'booksTitleList', 'booksAuthorsList'));
+        } else
+            return response()->json(['message' => 'error'],500);
     }
 
     /**
@@ -75,36 +61,21 @@ class BookController extends Controller
      *
      * @param  BookRequest $request
      * @param  \App\Models\Book  $book
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse|Response
      */
     public function update(BookRequest $request, Book $book)
     {
-        $data = $request->all();
-        if ($request->file('bookCover')) {
-            $image = $request->file('bookCover');
-            // todo find better hash function
-            $new_name = rand() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('book_covers'), $new_name);
-            $data['image'] = $new_name;
-        }
-        $result = $book->update($data);
-        $data_authors = $data['book_authors'];
-        $book->authors()->detach();
-        $book->authors()->attach($data_authors);
+        $result = $this->bookRepository->updateModel($book, $request);
 
-        $authors = Author::toBase()->get();
+        if ($result) {
+            $authors = $this->authorRepository->getAllBaseRecords();
+            $books = $this->bookRepository->buildQuery();
+            $booksTitleList = $this->bookRepository->getUniqueField('title');
+            $booksAuthorsList = $this->authorRepository->getBookAuthorsList();
 
-        $books = Book::select()
-            ->with(['authors']);
-        if (request()->has('titleOrderBy')) {
-            $books->orderBy('title', request('titleOrderBy'));
-        }
-        $books = $books->paginate(15);
-
-        $booksTitleList = Book::toBase()->pluck('title');
-        $booksAuthorsList = Author::selectRaw('CONCAT(name, " ", surname ) as full_name')->pluck('full_name');
-//        todo optimize query to get 1 query instead of amount of books
-        return response()->view('books.list',compact('authors', 'books', 'booksTitleList', 'booksAuthorsList'));
+            return response()->view('books.list', compact('authors', 'books', 'booksTitleList', 'booksAuthorsList'));
+        } else
+            return response()->json(['message' => 'error'],500);
     }
 
     /**
@@ -119,7 +90,7 @@ class BookController extends Controller
 
         if ($result) {
             $authors = $this->authorRepository->getAllBaseRecords();
-            $books = $this->bookRepository->buildQuery(request());
+            $books = $this->bookRepository->buildQuery();
             $booksTitleList = $this->bookRepository->getUniqueField('title');
             $booksAuthorsList = $this->authorRepository->getBookAuthorsList();
 

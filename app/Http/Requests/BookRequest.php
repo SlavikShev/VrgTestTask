@@ -25,7 +25,7 @@ class BookRequest extends FormRequest
     {
         return [
             'title' => 'required',
-            'bookCover' => 'mimes:jpg,png|size:2000',
+            'bookCover' => 'mimes:jpg,png|max:2000',
             'book_authors' => 'required|exists:authors,id',
             'publication_date' => 'required|date'
         ];
