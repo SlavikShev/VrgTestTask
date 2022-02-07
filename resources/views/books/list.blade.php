@@ -75,6 +75,5 @@
             {{ $books->links() }}
         </div>
     </div>
+    <script src="{{ asset('js/books.js') }}"></script>
 </div>
-
-<script src="{{ asset('js/books.js') }}"></script>

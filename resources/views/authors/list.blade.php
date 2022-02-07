@@ -58,6 +58,5 @@
             {{ $authors->links() }}
         </div>
     </div>
+    <script src="{{ asset('js/authorsList.js') }}" id="authors_script"></script>
 </div>
-
-<script src="{{ asset('js/authorsList.js') }}"></script>

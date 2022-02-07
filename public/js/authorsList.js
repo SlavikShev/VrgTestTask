@@ -1,3 +1,4 @@
+$('*').off('click');
 $(function() {
     // save
     $('#saveButton').on('click', function () {
