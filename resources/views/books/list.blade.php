@@ -19,7 +19,6 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Title
-                    {{--todo возможно переделать на link вместо формы--}}
                     <form action="{{ route('books.index') }}" method="get" class="d-inline">
                         <input type="hidden" value="asc" name="titleOrderBy">
                         <button type="submit">
