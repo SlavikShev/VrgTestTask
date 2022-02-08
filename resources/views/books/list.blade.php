@@ -52,7 +52,7 @@
                     <td>
                         <ul class="book_authors">
                             @foreach($book->authors as $book_author)
-                                <li data-id="{{ $book_author->id }}">{{ $book_author->name }} {{$book_author->surname}}</li>
+                                <li data-id="{{ $book_author->id }}">{{ $book_author->full_name }}</li>
                             @endforeach
                         </ul>
                     </td>

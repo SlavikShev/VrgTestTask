@@ -50,10 +50,10 @@ class AuthorRepository extends CoreRepository
     public function getBookAuthorsList ()
     {
         $authorsInBooks = Author::has('books')->get()->pluck('id');;
-        $query = Author::selectRaw('id, CONCAT(name, " ", surname ) as full_name')
+        $query = Author::selectRaw('id, CONCAT(name, " ", surname ) as fn')
             ->whereIn('id', $authorsInBooks)
             ->get()
-            ->pluck('full_name','id');
+            ->pluck('fn','id');
         return $query;
     }
 

@@ -16,4 +16,8 @@ class Author extends Model
     public function books () {
         return $this->belongsToMany(Book::class, 'book_authors');
     }
+
+    public function getFullNameAttribute () {
+        return $this->name . ' ' . $this->surname;
+    }
 }
