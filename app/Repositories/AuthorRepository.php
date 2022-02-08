@@ -52,10 +52,9 @@ class AuthorRepository extends CoreRepository
         $authorsInBooks = Author::has('books')->get()->pluck('id');;
         $query = Author::selectRaw('id, CONCAT(name, " ", surname ) as full_name')
             ->whereIn('id', $authorsInBooks)
-            ->get();
-        $bookAuthorsIds = $query->pluck('id')->toArray();
-        $bookFullNames = $query->pluck('full_name')->toArray();
-        return array_combine($bookAuthorsIds, $bookFullNames);
+            ->get()
+            ->pluck('full_name','id');
+        return $query;
     }
 
     public function getAllBaseRecords () {
