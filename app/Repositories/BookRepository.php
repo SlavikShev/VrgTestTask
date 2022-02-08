@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Book;
+use Illuminate\Support\Facades\File;
 
 class BookRepository extends CoreRepository
 {
@@ -70,6 +71,10 @@ class BookRepository extends CoreRepository
             $book->authors()->attach($data['book_authors']);
         }
         return $book;
+    }
+
+    public function removeBookCover ($cover_name) {
+        return File::delete(public_path('book_covers/'. $cover_name));
     }
 
     private function storeImage ($request)

@@ -86,9 +86,11 @@ class BookController extends Controller
      */
     public function destroy(Book $book)
     {
+        $bookImage = $book->image;
         $result = $this->bookRepository->deleteModel($book);
 
         if ($result) {
+            $this->bookRepository->removeBookCover($bookImage);
             $authors = $this->authorRepository->getAllBaseRecords();
             $books = $this->bookRepository->buildQuery();
             $booksTitleList = $this->bookRepository->getUniqueField('title');
