@@ -76,7 +76,6 @@ class AuthorController extends Controller
      */
     public function destroy(Author $author)
     {
-        $author->books()->detach();
         $result = $this->authorRepository->deleteModel($author);
 
         if ($result) {

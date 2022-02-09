@@ -49,9 +49,10 @@ class AuthorRepository extends CoreRepository
 
     public function getBookAuthorsList ()
     {
-        $authorsInBooks = Author::has('books')->get()->pluck('id');;
+        $authorsInBooks = Author::has('books')->toBase()->get()->pluck('id');
         $query = Author::selectRaw('id, CONCAT(name, " ", surname ) as fn')
             ->whereIn('id', $authorsInBooks)
+            ->toBase()
             ->get()
             ->pluck('fn','id');
         return $query;
@@ -73,5 +74,10 @@ class AuthorRepository extends CoreRepository
         $uniqueAuthorsName = $this->getUniqueField('name');
 
         return compact('authors', 'uniqueAuthorsSurname', 'uniqueAuthorsName');
+    }
+
+    public function deleteModel($author) {
+        $author->books()->detach();
+        return parent::deleteModel($author);
     }
 }
