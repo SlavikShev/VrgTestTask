@@ -12,7 +12,7 @@ class AuthorController extends Controller
 {
 
     private $authorRepository;
-    
+
     public function __construct()
     {
         $this->authorRepository = app(AuthorRepository::class);
@@ -76,6 +76,7 @@ class AuthorController extends Controller
      */
     public function destroy(Author $author)
     {
+        $author->books()->detach();
         $result = $this->authorRepository->deleteModel($author);
 
         if ($result) {
